@@ -1,0 +1,22 @@
+services:
+
+  training:
+    build:
+      context: .
+      dockerfile: training/Dockerfile
+    image: ml-training:v1
+    container_name: ml-training
+    volumes:
+      - ./artifacts:/app/artifacts
+
+  api:
+    build:
+      context: .
+      dockerfile: api/Dockerfile
+    image: ml-api:v1
+    container_name: ml-api
+    ports:
+      - "8000:8000"
+    depends_on:
+      training:
+        condition: service_completed_successfully
